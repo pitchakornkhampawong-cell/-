@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านก๋วยเตี๋ยวเรือรสเด็ด - สั่งออนไลน์</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🍜 ก๋วยเตี๋ยวเรือสูตรเด็ดคุณโอ้</h1>
+        <p>อร่อยเข้มข้น ไม่ต้องปรุงเพิ่ม สั่งส่งตรงถึงบ้านคุณ!</p>
+    </header>
+
+    <div class="container">
+        <h2 style="margin-bottom: 20px; text-align: center;">เลือกเมนูอร่อยประจำวัน</h2>
+        <div class="product-grid" id="productList"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        fetch('products.json')
+            .then(res => res.json())
+            .then(products => {
+                const list = document.getElementById('productList');
+                list.innerHTML = products.map(p => `
+                    <div class="card">
+                        <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x180?text=Noodle'">
+                        <div class="card-body">
+                            <h3>${p.name}</h3>
+                            <p>${p.description}</p>
+                            <div class="price">฿${p.price}</div>
+                            <button class="btn" onclick="selectProduct('${p.id}')">ระบุรายละเอียด / สั่งซื้อ</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+    </script>
+</body>
+</html>

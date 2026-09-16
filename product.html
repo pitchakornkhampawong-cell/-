@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกรายละเอียดก๋วยเตี๋ยว</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>ระบุรายละเอียดความอร่อย</h1>
+    </header>
+
+    <div class="container" style="background: white; padding: 20px; border-radius: 12px; max-width: 500px;">
+        <h2 id="productTitle" style="color: #b71c1c;">กำลังโหลด...</h2>
+        <p id="productDesc" style="margin-bottom: 15px; color: #666;"></p>
+        
+        <input type="hidden" id="basePrice">
+
+        <div class="form-group">
+            <label>เลือกชนิดเส้น:</label>
+            <select id="noodleType">
+                <option>เส้นเล็ก</option>
+                <option>เส้นใหญ่</option>
+                <option>เส้นหมี่ขาว</option>
+                <option>บะหมี่เหลือง</option>
+                <option>วุ้นเส้น</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>ระดับความเผ็ด:</label>
+            <select id="spicyLevel">
+                <option>เผ็ดปกติ (สูตรเด็ดของร้าน)</option>
+                <option>เผ็ดมาก (พริกคั่ว 2 เท่า)</option>
+                <option>เผ็ดน้อย</option>
+                <option>ไม่เผ็ดเลย</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>เพิ่มท็อปปิ้งพิเศษ:</label>
+            <select id="topping" onchange="updatePrice()">
+                <option value="0">ไม่เพิ่มท็อปปิ้ง</option>
+                <option value="15">เพิ่ม แคปหมูกรอบ (+15 บาท)</option>
+                <option value="15">เพิ่ม เกี๊ยวทอดกรอบ (+15 บาท)</option>
+                <option value="20">เพิ่ม ลูกชิ้นลวกจิ้ม (+20 บาท)</option>
+                <option value="25">เพิ่ม หมูตุ๋นพิเศษ (+25 บาท)</option>
+            </select>
+        </div>
+
+        <div style="font-size: 1.3rem; margin: 20px 0; font-weight: bold;">
+            ราคารวม: <span id="totalPriceDisplay" style="color: #e65100;">0 บาท</span>
+        </div>
+
+        <button class="btn" onclick="goToOrder()">ไปหน้ากรอกที่อยู่จัดส่ง ➔</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const productId = localStorage.getItem('selectedProductId');
+        fetch('products.json')
+            .then(res => res.json())
+            .then(products => {
+                const item = products.find(p => p.id === productId) || products[0];
+                document.getElementById('productTitle').innerText = item.name;
+                document.getElementById('productDesc').innerText = item.description;
+                document.getElementById('basePrice').value = item.price;
+                updatePrice();
+            });
+
+        function goToOrder() {
+            const title = document.getElementById('productTitle').innerText;
+            const noodle = document.getElementById('noodleType').value;
+            const spicy = document.getElementById('spicyLevel').value;
+            const toppingText = document.getElementById('topping').options[document.getElementById('topping').selectedIndex].text;
+            
+            const details = `${title} (${noodle} / ${spicy} / ${toppingText})`;
+            const total = updatePrice();
+
+            localStorage.setItem('currentOrderDetails', details);
+            localStorage.setItem('currentTotalPrice', total);
+            window.location.href = 'order.html';
+        }
+    </script>
+</body>
+</html>
