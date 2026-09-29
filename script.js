@@ -5,7 +5,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwye1MY1R2dK2Py
 // 🔹 ตั้งค่า Telegram Bot Token และ Chat ID
 // -------------------------------------------------------------
 const TELEGRAM_BOT_TOKEN = '8697164836:AAHdcDPE0v-gOIJNU-I22-ptAxUBW_F-Ez4';
-const TELEGRAM_CHAT_ID = '@Kuay_Tiew_Liew_Mong_Ther';
+const TELEGRAM_CHAT_ID = '-1004323225951';
 
 // บันทึกการเลือกสินค้า
 function selectProduct(id) {
